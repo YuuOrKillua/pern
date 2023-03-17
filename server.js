@@ -30,11 +30,6 @@ app.post('/usuario', (req, res) => {
     res.json({status: 'Usuario criado com sucesso'})
 })
 
-app.post('/serjio', (req, res) => {
-    usuario.push(req.body)
-    res.json({status: 'serjio'})
-})
-
 app.listen(8080, () => {
     console.log('rodando e http://localhost:8080')
 })
