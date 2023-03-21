@@ -5,7 +5,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 
 const usuario = [
-    
+
 ]
 
 app.get('/', (req, res) => {
@@ -29,6 +29,12 @@ app.post('/usuario', (req, res) => {
     usuario.push(req.body)
     res.json({status: 'Usuario criado com sucesso'})
 })
+
+app.delete('/usuario', (req, res) => {
+    usuario.pop(req.body)
+    res.json({status: 'Usuario foi deletado com sucesso'})
+})
+
 
 app.listen(8080, () => {
     console.log('rodando e http://localhost:8080')
