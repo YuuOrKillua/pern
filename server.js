@@ -29,10 +29,14 @@ app.get('/', (req, res) => {
 //     res.send('perfil do usuário')
 // })
 
-app.get('/usuarios', (req, res) => {
-    res.render('usuarios')
-    // res.json(usuarios)
-    console.log(req.body)
+app.get('/usuarios', async (req, res) => {
+    try {
+        const user = await pool.query("SELECT * FROM usuario")
+
+        res.json(user.rows)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.post('/usuarios', async (req, res) => {
@@ -43,15 +47,16 @@ app.post('/usuarios', async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-    // res.send("Nome: " + req.body.nome + "\nEmail: " + req.body.email)
-    // usuarios.push(req.body)
-    // usuarios.push(req.body)
-    // res.json({status: 'Usuario criado com sucesso'})
 })
 
-app.delete('/usuarios', (req, res) => {
-    usuarios.pop(req.body)
-    res.json({status: 'Usuario foi deletado com sucesso'})
+app.delete('/usuarios', async (req, res) => {
+    try {
+        const { id } = req.body;
+        const deleteUser = await pool.query("DELETE FROM usuario WHERE id= $1", [id])
+        res.json(deleteUser.rows)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 
