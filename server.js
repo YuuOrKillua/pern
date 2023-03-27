@@ -11,23 +11,10 @@ app.use(express.urlencoded({ extended: true}))
 app.engine('handlebars', engine())
 app.set('view engine', 'handlebars')
 
-// Código   
-const usuarios = [
-    
-]
-
 //Rotas
 app.get('/', (req, res) => {
-    res.json(usuarios)
+    res.json("usuarios")
 })
-
-// app.get('/cadastro', (req, res) => {
-//     res.send('tela de cadastro')
-// })
-
-// app.get('/perfil', (req, res) => {
-//     res.send('perfil do usuário')
-// })
 
 app.get('/usuarios', async (req, res) => {
     try {
@@ -44,6 +31,17 @@ app.post('/usuarios', async (req, res) => {
         const {nome, email, cpf} = req.body
         const newUser = await pool.query('INSERT INTO usuario (nome, email, cpf) VALUES($1, $2, $3) RETURNING *', [nome, email, cpf])
         res.json(newUser.rows[0])
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.put('/usuarios/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const {nome, email, cpf} = req.body
+        const updateUser = await pool.query("UPDATE usuario SET nome = $1, email = $2, cpf = $3 WHERE id = $4", [nome, email, cpf, id])
+        res.json("Updated user.")
     } catch (error) {
         console.log(error)
     }
